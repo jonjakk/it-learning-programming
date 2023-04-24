@@ -1,0 +1,11 @@
+
+def evaluate(code, maze, start, end):
+    #Here is where you will evaluate the code and return the results
+    namespace = {'maze': maze, 'start': start, 'end': end}
+    exec(code, {}, namespace)
+    result = namespace["result"]
+    
+    #TODO Call to OpenAI to get the feedback and score
+    score = 100
+    feedback = "Nice work!"
+    return result, score, feedback
