@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Three Maze</title>
+        <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="static/assets/css/styles.css">
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-57676020-1', 'auto');
+            ga('send', 'pageview');
+        </script>
+    </head>
+	<body>
+        <div class="three">
+            <div class="button-wrapper">
+                <button class="generate">
+                    Rebuild maze
+                </button>
+            </div>
+        </div>
+        <div class="caption">
+            Random mazes with <a href="http://threejs.org/">three.js</a> and <a href="https://github.com/sole/tween.js/">tween.js</a><br />
+            Use <strong>arrow keys</strong> to move, and the <strong>mouse</strong> to rotate the view
+        </div>
+        <script type="text/javascript" src="static/assets/js/libs/three.min.js"></script>
+        <script type="text/javascript" src="static/assets/js/libs/tween.min.js"></script>
+        <script type="text/javascript" src="static/assets/js/threemaze.js"></script>
+        <script type="text/javascript" src="static/assets/js/threemaze.generate.js"></script>
+        <script type="text/javascript">
+            window.onload = function()
+            {
+                var wrapper = document.querySelector('.three');
+                var button = document.querySelector('.generate');
+                new ThreeMaze(wrapper, button);
+            }
+        </script>
+	</body>
+</html>

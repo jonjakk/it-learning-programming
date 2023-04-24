@@ -1,0 +1,7 @@
+TODO: Change the input maze to be custom maze
+TODO: When finished load next maze
+TODO: Store multiple Mazes and load them one after the other if finish
+
+TODO: Coding IDE
+TODO: Create a mock call to evaluate maze when clicking the submit button
+TODO: 
