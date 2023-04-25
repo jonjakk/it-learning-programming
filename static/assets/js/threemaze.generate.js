@@ -80,5 +80,7 @@ ThreeMaze.prototype.generateMaze = function(size)
             } while (bln_blocked == 1)
         }
     } while (int_done + 1 < ((size - 1) * (size - 1)) / 4)
+    console.log('Generated maze of size ' + size);
+    console.log(map);
     return map;
 };

@@ -1,4 +1,4 @@
-TODO: Change the input maze to be custom maze
+DONE: Change the input maze to be custom maze
 TODO: When finished load next maze
 TODO: Store multiple Mazes and load them one after the other if finish
 
