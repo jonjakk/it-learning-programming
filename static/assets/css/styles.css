@@ -137,3 +137,19 @@ strong
 {
     font-weight : 600;
 }
+#editor {
+    height: 80vh;
+  }
+  
+  #submit-code {
+    background-color: #c56b4f;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+  }
