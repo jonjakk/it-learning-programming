@@ -1,51 +1,70 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
-        <title>Three Maze</title>
-        <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" type="text/css" href="static/assets/css/styles.css">
-    </head>
-	<body>
-        <div class="three">
-            <div class="button-wrapper">
-                <button class="generate">
-                    Run the Code
-                </button>
-            </div>
-        </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Three Maze</title>
+    <link
+      href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="static/assets/css/styles.css"
+    />
+  </head>
+  <body>
+    <div class="three"></div>
+    <div class="editor-container">
+        <div class="button-wrapper">
+            <button class="generate">Run the Code</button>
+          </div>
+
         <div id="editor"></div>
-        <button id="submit-code">Submit Code</button>      
-        <script type="text/javascript" src="static/assets/js/libs/three.min.js"></script>
-        <script type="text/javascript" src="static/assets/js/libs/tween.min.js"></script>
-        <script type="text/javascript" src="static/assets/js/threemaze.js"></script>
-        <script type="text/javascript" src="static/assets/js/threemaze.generate.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js" integrity="sha512-8RnEqURPUc5aqFEN04aQEiPlSAdE0jlFS/9iGgUyNtwFnSKCXhmB6ZTNl7LnDtDWKabJIASzXrzD0K+LYexU9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js" integrity="sha512-2M0GdbU5OxkGYMhakED69bw0c1pW3Nb0PeF3+9d+SnwN1ryPx3wiDdNqK3gSM7KAU/pEV+2tFJFbMKjKAahOkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script type="text/javascript">
-            window.onload = function()
-            {
-                var wrapper = document.querySelector('.three');
-                var button = document.querySelector('.generate');
-                new ThreeMaze(wrapper, button);
-            }
-            const editor = CodeMirror(document.getElementById('editor'), {
-                mode: 'python',
-                theme: 'material',
-                lineNumbers: true,
-                indentUnit: 4,
-                smartIndent: true,
-                matchBrackets: true,
-                autoCloseBrackets: true,
-              });
-              
-              document.getElementById('submit-code').addEventListener('click', () => {
-                const code = editor.getValue();
-                // Process the submitted code here, e.g., send it to a server, display the output, etc.
-                console.log('Submitted code:', code);
-              });
-              
-        </script>
-	</body>
+    </div>
+    
+    <script
+      type="text/javascript"
+      src="static/assets/js/libs/three.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="static/assets/js/libs/tween.min.js"
+    ></script>
+    <script type="text/javascript" src="static/assets/js/threemaze.js"></script>
+    <script
+      type="text/javascript"
+      src="static/assets/js/threemaze.generate.js"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"
+      integrity="sha512-8RnEqURPUc5aqFEN04aQEiPlSAdE0jlFS/9iGgUyNtwFnSKCXhmB6ZTNl7LnDtDWKabJIASzXrzD0K+LYexU9g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/python/python.min.js"
+      integrity="sha512-2M0GdbU5OxkGYMhakED69bw0c1pW3Nb0PeF3+9d+SnwN1ryPx3wiDdNqK3gSM7KAU/pEV+2tFJFbMKjKAahOkQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var wrapper = document.querySelector(".three");
+        var button = document.querySelector(".generate");
+        new ThreeMaze(wrapper, button);
+      };
+      const editor = CodeMirror(document.getElementById("editor"), {
+        mode: "python",
+        theme: "material",
+        lineNumbers: true,
+        indentUnit: 4,
+        smartIndent: true,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+      });
+    </script>
+  </body>
 </html>
