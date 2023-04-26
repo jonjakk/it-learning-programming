@@ -20,11 +20,8 @@
         this.renderer = {};
         this.player = {};
         this.end = {};
-        this.side = 6;
+        this.side = 31;
         this.thickness = 20;
-        this.mazes = mazes;
-        this.currentMaze = 0;
-
 
         // Inits
         this.initScene();
@@ -47,8 +44,7 @@
      */
     ThreeMaze.prototype.onGenerateMaze = function()
     {
-        console.log('Current maze: ' + this.currentMaze);
-        var new_map = this.loadMaze(this.currentMaze);
+        var new_map = this.generateMaze(this.side);
         var new_player_path = [];
         var latency = 50;
         var self = this;
@@ -136,16 +132,6 @@
         this.player.mazePosition = {x: this.side - 1, z: this.side - 1};
         this.movePlayer(false);
     };
-
-        /**
-     * Loads a maze from the list of custom mazes
-     * @param index
-     */
-        ThreeMaze.prototype.loadMaze = function(index)
-        {
-            return this.mazes[index];
-        };
-    
 
     /**
      * Updates a mesh when doing a tween
@@ -332,7 +318,6 @@
         {
             if (self.player.mazePosition.x === 2 && self.player.mazePosition.z === 2)
             {
-                self.currentMaze = (self.currentMaze + 1) % self.mazes.length;
                 self.onGenerateMaze();
             }
         });
@@ -416,53 +401,3 @@
     window.ThreeMaze = ThreeMaze;
 
 })(window);
-
-mazes = [
-    [
-        {
-            map : [
-                [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 1, 1, 0],
-        [0, 0, 1, 1, 1, 1, 0],
-        [0, 0, 1, 1, 1, 1, 0],
-        [0, 0, 1, 1, 1, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-            ],
-            side: 6,
-        }
-        
-    ],
-    [
-        {
-            map : [
-                [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 1, 1, 0],
-        [0, 0, 1, 1, 0, 1, 0],
-        [0, 0, 1, 0, 1, 1, 0],
-        [0, 0, 1, 1, 1, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-            ],
-            side: 6,
-        }
-        
-    ],
-    [
-        {
-            map : [
-                [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 1, 1, 0],
-        [0, 0, 1, 0, 1, 1, 0],
-        [0, 0, 1, 1, 0, 1, 0],
-        [0, 0, 1, 1, 1, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0],
-            ],
-            side: 6,
-        }
-        
-    ],
-];
-
-

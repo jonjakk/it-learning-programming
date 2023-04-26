@@ -137,9 +137,6 @@ strong
 {
     font-weight : 600;
 }
-#editor {
-    height: 80vh;
-  }
   
   #submit-code {
     background-color: #c56b4f;
@@ -154,11 +151,35 @@ strong
     cursor: pointer;
   }
 
+
   .editor-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 4;
+    width: 80%;
+    height: 200px; /* Adjust the height to your desired value */
+    margin: 20px auto;
+    border: 1px solid #808080;
+    border-radius: 4px;
   }
   
+  #editor {
+    height: 100%;
+  }
+
+/* Modify the primrose class */
+primrose {
+    transition: opacity 0.3s; /* Add this line */
+    margin-top: 115px;
+    opacity: 1 !important;
+    position: absolute; /* Add this line */
+    width: 100%; /* Add this line */
+    height: calc(100% - 115px); /* Add this line */
+    z-index: -1; /* Add this line */
+  
+  }  
+
+  button.generate {
+    margin-right: 10px;
+  }
+  
+  button.toggle-editor {
+    margin-left: 10px;
+  }

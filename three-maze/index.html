@@ -16,14 +16,17 @@
     />
   </head>
   <body>
-    <div class="three"></div>
-    <div class="editor-container">
-        <div class="button-wrapper">
-            <button class="generate">Run the Code</button>
-          </div>
-
-        <div id="editor"></div>
-    </div>
+    <div class="three">
+      <div class="button-wrapper">
+          <button class="generate">
+              Submit Code
+          </button>
+          <button class="toggle-editor">
+            Toggle Editor
+        </button>
+      </div>
+      <primrose style="display:none"></primrose>
+  </div>
     
     <script
       type="text/javascript"
@@ -50,6 +53,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script type="module" src="static/assets/js/libs/primrose.js"></script>
     <script type="text/javascript">
       window.onload = function () {
         var wrapper = document.querySelector(".three");
@@ -65,6 +69,26 @@
         matchBrackets: true,
         autoCloseBrackets: true,
       });
+
+      var primrose = document.querySelector("primrose");
+      var primroseVisible = false;
+    
+      function togglePrimrose() {
+        primroseVisible = !primroseVisible;
+        primrose.style.opacity = primroseVisible ? 0.5 : 0;
+        primrose.style.zIndex = primroseVisible ? 2 : -1;
+      }
+      
+      document.addEventListener("keydown", function (event) {
+        if ((event.ctrlKey || event.metaKey) && event.code === "Space") {
+          togglePrimrose();
+        }
+      });
+      
+      // Add an event listener for the "Toggle Editor" button
+      var toggleEditorButton = document.querySelector(".toggle-editor");
+      toggleEditorButton.addEventListener("click", togglePrimrose);
+      
     </script>
   </body>
 </html>
