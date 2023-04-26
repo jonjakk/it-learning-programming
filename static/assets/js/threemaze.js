@@ -22,17 +22,23 @@
         this.end = {};
         this.side = 31;
         this.thickness = 20;
+        this.current_level = 0;
+        this.new_map = [];
+        this.end_x = 1;
+        this.end_y = 1;
 
         // Inits
+        retrieveMaze(this).then(() => {
         this.initScene();
         this.onWindowResize();
         this.render();
+        });
 
         // Events
         this.wrapper.addEventListener('mousemove', this.onMouseMove.bind(this));
         this.wrapper.addEventListener('mousedown', this.onMouseDown.bind(this));
         this.wrapper.addEventListener('mouseup', this.onMouseUp.bind(this));
-        button.addEventListener('click', this.onGenerateMaze.bind(this));
+        button.addEventListener('click', this.simulateMaze.bind(this));
         button.dispatchEvent(new Event('click'));
         window.addEventListener('resize', this.onWindowResize.bind(this));
         document.addEventListener('keydown', this.onKeyDown.bind(this));
@@ -42,9 +48,32 @@
      * Generates a new maze
      * Loops into the maze, removes old blocks and adds new ones
      */
+    function retrieveMaze(instance) {
+    const setData = (map, sideValue) => {
+        instance.new_map = map;
+        instance.side = sideValue;
+    }
+
+    return fetch(`/maze/${instance.current_level}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Fetching maze");
+            setData(data[0].map, data[0].side);
+            console.log("Current Level in Fetch", instance.current_level);
+        })
+        .catch(error => console.error(error));
+}
+
+function simulateMaze(instance) {
+    
+}
     ThreeMaze.prototype.onGenerateMaze = function()
     {
-        var new_map = this.generateMaze(this.side);
+        retrieveMaze(this).then(() => {
+        var new_map = this.new_map;
+        console.log("Map " , new_map);
+        console.log("Side ", this.side);
+
         var new_player_path = [];
         var latency = 50;
         var self = this;
@@ -131,6 +160,7 @@
         // Inits player
         this.player.mazePosition = {x: this.side - 1, z: this.side - 1};
         this.movePlayer(false);
+    });
     };
 
     /**
@@ -318,6 +348,8 @@
         {
             if (self.player.mazePosition.x === 2 && self.player.mazePosition.z === 2)
             {
+                self.current_level = self.current_level + 1
+                console.log("Added to current level", self.current_level);
                 self.onGenerateMaze();
             }
         });

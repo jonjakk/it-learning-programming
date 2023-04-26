@@ -1,9 +1,8 @@
 DONE: Change the input maze to be custom maze
 DONE: When finished load next maze
-DONE: Store multiple Mazes and load them one after the other if finish
+DONE: Store multiple Mazes and load them one after the other if finish --> Notice everyone that a maze has to start from the left corner and end on the right corner
 DONE: Coding IDE
+DONE: Switch Current Level
 
-TODO: Change start and end position of maze
 TODO: Submit Code
-TODO: Create a mock call to evaluate maze when clicking the submit button
 TODO: Define Custom Grammar for the text editor according to custom language that is developed
