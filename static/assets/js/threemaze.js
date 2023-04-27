@@ -61,7 +61,7 @@ import { Primrose } from "/static/assets/js/libs/primrose.js";
             }
           }
           // When the user clicks the close button, close the modal
-          this.closeButton.onclick = function() {
+          this.closeButton.onclick = () => {
             this.modal.style.display = "none";
           }
     };
@@ -126,7 +126,7 @@ ThreeMaze.prototype.simulateMaze = function() {
 
             // pop up a modal with the result
             var modalText = document.getElementById("modalText");
-            modalText.innerHTML = data.feedback;
+            modalText.innerHTML = "<p>Your Score was :</p> <p>" + data.score + "</p> <br><p> This is our Feedback: </p><br> <p>" + data.feedback + "</p><br><br> <p>This is your code:</p> <br><p>" + data.code + "</p><br><br> <p>This is the code that is was translated to: </p><br><p>" + data.translated_pseudo_code + "</p>";
             this.modal.style.display = "block";
 
             // if result is true, set current_level to current_level + 1
