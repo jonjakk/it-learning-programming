@@ -1,14 +1,15 @@
+
 (function(window)
 {
 
     'use strict';
-
+ 
     /**
      * Maze class
      * @param wrapper
      * @param button
      */
-    function ThreeMaze(wrapper, button)
+    function ThreeMaze(wrapper, button, )
     {
         // Object attributes
         this.wrapper = wrapper;
@@ -38,7 +39,10 @@
         this.wrapper.addEventListener('mousemove', this.onMouseMove.bind(this));
         this.wrapper.addEventListener('mousedown', this.onMouseDown.bind(this));
         this.wrapper.addEventListener('mouseup', this.onMouseUp.bind(this));
-        button.addEventListener('click', this.simulateMaze.bind(this));
+        button.addEventListener('click', () => {
+            this.onGenerateMaze();
+            this.simulateMaze();
+        });
         button.dispatchEvent(new Event('click'));
         window.addEventListener('resize', this.onWindowResize.bind(this));
         document.addEventListener('keydown', this.onKeyDown.bind(this));
@@ -49,6 +53,7 @@
      * Loops into the maze, removes old blocks and adds new ones
      */
     function retrieveMaze(instance) {
+        
     const setData = (map, sideValue) => {
         instance.new_map = map;
         instance.side = sideValue;
@@ -64,9 +69,18 @@
         .catch(error => console.error(error));
 }
 
-function simulateMaze(instance) {
-    
-}
+ThreeMaze.prototype.simulateMaze = function() {
+    const editor = new Primrose({
+        element: document.querySelector("primrose")
+    });
+    const data = {
+        maze_id: this.current_level,
+        code: editor.value
+      };
+    console.log("Data in Simulate Maze", document.querySelector("primrose"));
+    console.log("Data in Simulate Maze", document.querySelector("primrose").value);
+};
+
     ThreeMaze.prototype.onGenerateMaze = function()
     {
         retrieveMaze(this).then(() => {

@@ -5,4 +5,16 @@ DONE: Coding IDE
 DONE: Switch Current Level
 
 TODO: Submit Code
+1. Send Post Request
+RESULT:
+        "result": result,
+        "score": score,
+        "feedback": feedback,
+        "path_taken": path_taken,
+        "translated_pseudo_code": translated_pseudo_code
+
+2. Simulate the guy going through the labyrinth --> only change current level if it was made via simulation
+3. Display whether it was sucessful or not, the pseudocode etc in a new tab. "Continue to next Level"
+
+TODO: Change current Level to use Local Storage
 TODO: Define Custom Grammar for the text editor according to custom language that is developed

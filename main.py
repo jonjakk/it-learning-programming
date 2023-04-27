@@ -36,17 +36,19 @@ async def get(request: Request):
 
 
 @app.post("/codecheck")
-async def codecheck(maze: List[List[int]], start: str, end: str, code: str):
+async def codecheck(maze_id: int, code: str):
+    maze = get_maze(maze_id)
     translated_pseudo_code = translate(code, maze)
     result, score, feedback, path_taken = evaluate(
-        translated_pseudo_code, maze, start, end
+        translated_pseudo_code, maze
     )
     return {
-        "result": result,
-        "score": score,
-        "feedback": feedback,
-        "path_taken": path_taken,
-        "translated_pseudo_code": translated_pseudo_code,
+        "result": result, #Boolean, True if the maze was solved
+        "score": score, #Integer, score from 0 to 100
+        "feedback": feedback, #String, feedback from the evaluation
+        "path_taken": path_taken, #List of tuples, the path taken by the algorithm [(1, 2), (1, 3), (1, 4), (2, 4), (3, 4), (4, 4)]
+        "translated_pseudo_code": translated_pseudo_code, #String, the translated pseudo code,
+        "code": code #String, the original code
     }
 
 
@@ -54,6 +56,17 @@ async def codecheck(maze: List[List[int]], start: str, end: str, code: str):
 async def get_maze(maze_id: int):
     return mock_mazes[maze_id]
 
+#Mock for testing of UI
+@app.post("/mock_codecheck")
+async def codecheck(maze_id: int, code: str):
+    return {
+            "result": True, #Boolean, True if the maze was solved
+            "score": 95, #Integer, score from 0 to 100
+            "feedback": "You did well on the labyrinth, but you can improve a lot in Area X", #String, feedback from the evaluation
+            "path_taken": [(1, 2), (1, 3), (1, 4), (2, 4), (3, 4), (4, 4)], #List of tuples, the path taken by the algorithm [(1, 2), (1, 3), (1, 4), (2, 4), (3, 4), (4, 4)]
+            "translated_pseudo_code": "Example Pseudo Code", #String, the translated pseudo code,
+            "code": code #String, the original code
+        }
 
 mock_mazes = [
     [
