@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Body
 from evaluate import evaluate
 from translate import translate
 import os
@@ -36,7 +36,7 @@ async def get(request: Request):
 
 
 @app.post("/codecheck")
-async def codecheck(maze_id: int, code: str):
+async def codecheck(maze_id: int = Body(...), code: str = Body(...)):
     maze = get_maze(maze_id)
     translated_pseudo_code = translate(code, maze)
     result, score, feedback, path_taken = evaluate(
@@ -58,7 +58,7 @@ async def get_maze(maze_id: int):
 
 #Mock for testing of UI
 @app.post("/mock_codecheck")
-async def codecheck(maze_id: int, code: str):
+async def codecheck(maze_id: int = Body(...), code: str = Body(...)):
     return {
             "result": True, #Boolean, True if the maze was solved
             "score": 95, #Integer, score from 0 to 100

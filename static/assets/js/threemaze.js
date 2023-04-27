@@ -1,4 +1,4 @@
-
+import { Primrose } from "/static/assets/js/libs/primrose.js";
 (function(window)
 {
 
@@ -27,6 +27,9 @@
         this.new_map = [];
         this.end_x = 1;
         this.end_y = 1;
+        this.editor = new Primrose({
+            element: document.querySelector("primrose")
+        });
 
         // Inits
         retrieveMaze(this).then(() => {
@@ -62,31 +65,36 @@
     return fetch(`/maze/${instance.current_level}`)
         .then(response => response.json())
         .then(data => {
-            console.log("Fetching maze");
             setData(data[0].map, data[0].side);
-            console.log("Current Level in Fetch", instance.current_level);
         })
         .catch(error => console.error(error));
 }
 
 ThreeMaze.prototype.simulateMaze = function() {
-    const editor = new Primrose({
-        element: document.querySelector("primrose")
-    });
     const data = {
         maze_id: this.current_level,
-        code: editor.value
+        code: this.editor.value
       };
-    console.log("Data in Simulate Maze", document.querySelector("primrose"));
-    console.log("Data in Simulate Maze", document.querySelector("primrose").value);
+    //POST request to codecheck endpoint
+    fetch('/codecheck', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        }
+        )
+
 };
 
     ThreeMaze.prototype.onGenerateMaze = function()
     {
         retrieveMaze(this).then(() => {
         var new_map = this.new_map;
-        console.log("Map " , new_map);
-        console.log("Side ", this.side);
 
         var new_player_path = [];
         var latency = 50;
@@ -363,7 +371,6 @@ ThreeMaze.prototype.simulateMaze = function() {
             if (self.player.mazePosition.x === 2 && self.player.mazePosition.z === 2)
             {
                 self.current_level = self.current_level + 1
-                console.log("Added to current level", self.current_level);
                 self.onGenerateMaze();
             }
         });
