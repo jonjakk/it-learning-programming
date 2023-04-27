@@ -30,6 +30,8 @@ import { Primrose } from "/static/assets/js/libs/primrose.js";
         this.editor = new Primrose({
             element: document.querySelector("primrose")
         });
+        this.modal = document.getElementById("myModal");
+        this.closeButton = document.getElementsByClassName("close")[0];
 
         // Inits
         retrieveMaze(this).then(() => {
@@ -44,11 +46,24 @@ import { Primrose } from "/static/assets/js/libs/primrose.js";
         this.wrapper.addEventListener('mouseup', this.onMouseUp.bind(this));
         button.addEventListener('click', () => {
             this.onGenerateMaze();
-            this.simulateMaze();
+            setTimeout(() => {
+                this.simulateMaze();
+            }, 800);
         });
-        button.dispatchEvent(new Event('click'));
+        this.onGenerateMaze();
         window.addEventListener('resize', this.onWindowResize.bind(this));
         document.addEventListener('keydown', this.onKeyDown.bind(this));
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == this.modal) {
+                this.modal.style.display = "none";
+            }
+          }
+          // When the user clicks the close button, close the modal
+          this.closeButton.onclick = function() {
+            this.modal.style.display = "none";
+          }
     };
 
     /**
@@ -76,7 +91,7 @@ ThreeMaze.prototype.simulateMaze = function() {
         code: this.editor.value
       };
     //POST request to codecheck endpoint
-    fetch('/codecheck', {
+    fetch('/mock_codecheck', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -86,6 +101,38 @@ ThreeMaze.prototype.simulateMaze = function() {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            // simulate going the path that was given by pressing the right keys depending on where you want to go
+            var upArrowEvent = new KeyboardEvent("keydown", { keyCode: 38 });
+            var downArrowEvent = new KeyboardEvent("keydown", { keyCode: 40 });
+            var leftArrowEvent = new KeyboardEvent("keydown", { keyCode: 37 });
+            var rightArrowEvent = new KeyboardEvent("keydown", { keyCode: 39 });
+
+            for (var i = 1; i < data.path_taken.length; i++) {
+                const [prevX, prevY] = data.path_taken[i - 1];
+                const [currentX, currentY] = data.path_taken[i];
+
+                setTimeout(() => {
+                    if (currentX < prevX) { // When moving right in the flipped maze, currentX will be less than prevX
+                        document.dispatchEvent(downArrowEvent);
+                    } else if (currentX > prevX) { // When moving left in the flipped maze, currentX will be greater than prevX
+                        document.dispatchEvent(leftArrowEvent);
+                    } else if (currentY > prevY) {
+                        document.dispatchEvent(upArrowEvent);
+                    } else if (currentY < prevY) {
+                        document.dispatchEvent(rightArrowEvent);
+                    }
+                }, 500 * i);
+            }
+
+            // pop up a modal with the result
+            var modalText = document.getElementById("modalText");
+            modalText.innerHTML = data.feedback;
+            this.modal.style.display = "block";
+
+            // if result is true, set current_level to current_level + 1
+            if (data.result) {
+                this.current_level += 1;
+            }
         }
         )
 
@@ -370,7 +417,6 @@ ThreeMaze.prototype.simulateMaze = function() {
         {
             if (self.player.mazePosition.x === 2 && self.player.mazePosition.z === 2)
             {
-                self.current_level = self.current_level + 1
                 self.onGenerateMaze();
             }
         });

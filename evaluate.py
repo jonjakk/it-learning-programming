@@ -1,7 +1,7 @@
 
 def evaluate(code, maze):
     #Here is where you will evaluate the code and return the results
-    #start and end always have to be at the top left and bottom right --> Please check whether its top and top right
+    #start bottom right, end top left
     namespace = {'maze': maze, 'start': start, 'end': end}
     exec(code, {}, namespace)
     result = namespace["result"]
