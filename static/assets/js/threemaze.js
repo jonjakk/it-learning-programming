@@ -126,7 +126,28 @@ ThreeMaze.prototype.simulateMaze = function() {
 
             // pop up a modal with the result
             var modalText = document.getElementById("modalText");
-            modalText.innerHTML = "<p>Your Score was :</p> <p>" + data.score + "</p> <br><p> This is our Feedback: </p><br> <p>" + data.feedback + "</p><br><br> <p>This is your code:</p> <br><p>" + data.code + "</p><br><br> <p>This is the code that is was translated to: </p><br><p>" + data.translated_pseudo_code + "</p>";
+            //Display Code in special primrose canvas
+            const prim_code = new Primrose({});
+            prim_code.value = data.code;
+            const prim_translated = new Primrose({});
+            prim_translated.value = data.translated_pseudo_code;
+            console.log(prim_code.value);
+            console.log(prim_translated.value);
+            
+            Promise.all([
+                createVisibleCanvasFromOffscreen(prim_code),
+                createVisibleCanvasFromOffscreen(prim_translated),
+              ]).then(([visiblePrimCodeCanvas, visiblePrimTranslatedCanvas]) => {
+                modalText.innerHTML =
+                  "<p>Your Score was :</p> <p>" +
+                  data.score +
+                  "</p> <br><p> This is our Feedback: </p><br> <p>";
+                modalText.innerHTML +=
+                  "<br><br> <p>This is the code that is was translated to: </p><br>";
+                modalText.appendChild(visiblePrimTranslatedCanvas); // Add the prim_translated's visible canvas to the modalText
+              });
+            
+            //show the Modal
             this.modal.style.display = "block";
 
             // if result is true, set current_level to current_level + 1
@@ -137,6 +158,21 @@ ThreeMaze.prototype.simulateMaze = function() {
         )
 
 };
+
+function createVisibleCanvasFromOffscreen(primroseObj) {
+    return new Promise((resolve) => {
+      const offscreenCanvas = primroseObj.canvas;
+      const visibleCanvas = document.createElement("canvas");
+      visibleCanvas.width = offscreenCanvas.width;
+      visibleCanvas.height = offscreenCanvas.height;
+  
+      primroseObj.addEventListener("update", () => {
+        const ctx = visibleCanvas.getContext("2d");
+        ctx.drawImage(offscreenCanvas, 0, 0);
+        resolve(visibleCanvas);
+      });
+    });
+  }
 
     ThreeMaze.prototype.onGenerateMaze = function()
     {
