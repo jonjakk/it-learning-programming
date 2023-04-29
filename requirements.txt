@@ -4,3 +4,5 @@ pydantic
 uvicorn
 langchain
 jinja2
+python-dotenv
+re

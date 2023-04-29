@@ -133,6 +133,10 @@ ThreeMaze.prototype.simulateMaze = function() {
             prim_translated.value = data.translated_pseudo_code;
             console.log(prim_code.value);
             console.log(prim_translated.value);
+
+            // const prim_feedback = new Primrose({});
+            // prim_feedback.value = data.feedback;
+            // console.log(prim_feedback.value);
             
             Promise.all([
                 createVisibleCanvasFromOffscreen(prim_code),

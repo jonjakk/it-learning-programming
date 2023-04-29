@@ -1,0 +1,59 @@
+1. General structure of the language:
+
+program := declaration* statement*
+
+declaration := variableName ( , variableName)* | methodName(parameter) { statement* }
+
+statement := ; | { statement* }
+
+                      IF (condition) statement | IF (condition) statement else statement | WHILE (condition) { statement* }
+
+                FOR EACH { statement* }
+
+operator := + | - | * | / | 
+
+logical operator := AND | OR
+
+comparison := EQUALS | LESS EQUAL | GREATER EQUAL | NOT EQUAL | GREATER | LESS 
+
+expression := number | (expression) | operator* | expression operator expression
+
+condition := TRUE | FALSE | expression comparison expression
+
+2. Reserved words/characters:
+
+- IF
+- ELSE
+- FOR EACH
+- comparisons (siehe oben)
+- operators (siehe oben)
+- TRUE
+- FALSE
+- end(return)
+
+3. Already implemented/available methods:
+
+- reset() := “Returns the user to the start position”
+
+4. Summary with examples:
+
+4.1 Declaration:
+
+- Variable-Declaration: **`variableName = value;`** (**e.g**.: **`name = "Max";`**)
+- Methoden-Definition: **`methodName(parameter) { statement* }`** (**e.g**.: **`sayHello(name) { print("Hello " + name); }`**)
+
+4.2 Statement:
+
+- Easy Statement: **`statement;`** (**e.g**.: **`print("Hello World!");`**)
+- Block-Statement: **`{ statement* }`** (**e.g**.: **`{ print("Statement 1"); print("Statement 2"); }`**)
+
+4.3 Loops:
+
+- For-Loop: **`for each variableName in array { statement* }`** (**e.g**.: **`for each item in myList { print(item); }`**)
+- While-Loop: **`while (condition) { statement* }`** (**e.g**.: **`while ($i < 10) { print($i); $i++; }`**)
+- Do-While-Loop: **`do { statement* } while (condition);`** (**e.g**.: **`do { print("Hello World!"); } while ($i < 10);`**)
+
+4.4 Expressions:
+
+- Arithmetische Expressions: **`expression operator expression`** (**e.g**.: **`result = a + b;`**)
+- Boolesche Expressions: **`expression comparison expression`** (**e.g**.: **`if (a == b) { print("Equal!"); }`**)

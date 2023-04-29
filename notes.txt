@@ -8,5 +8,11 @@ DONE: Send Post Request
 DONE: Simulate the guy going through the labyrinth --> only change current level if it was made via simulation
 DONE: Display whether it was sucessful or not, the pseudocode etc in a new tab. "Continue to next Level"
 
+DONE: connect the input code with openai api
+DONE: Add Secret keys to vercel
+TODO: SQL database connection (planetscale)
+TODO: Wait a for openai response after clicking on submit the code button before changes etc and prevent overuse of submit button
+TODO: Log Feedback and show feedback as a response on the screen after submiting the code
+
 FUTURE: Change current Level to use Local Storage
 FUTURE: Define Custom Grammar for the text editor according to custom language that is developed
