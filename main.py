@@ -48,7 +48,7 @@ async def codecheck(maze_id: int = Body(...), code: str = Body(...)):
         "feedback": feedback, #String, feedback from the evaluation
         "path_taken": path_taken, #List of tuples, the path taken by the algorithm [(1, 2), (1, 3), (1, 4), (2, 4), (3, 4), (4, 4)]
         "translated_pseudo_code": translated_pseudo_code, #String, the translated pseudo code,
-        "code": code #String, the original code
+        "code": code #String, the original cod
     }
 
 
