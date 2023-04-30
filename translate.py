@@ -16,7 +16,7 @@ def translate(code, maze):
     #TODO Translate the maze to python which can then be used in exec() in evaluate.py
 
     # Read the content of the "pseudo_lang.txt" file
-    with open("pseudo_lang.txt", "r") as file:
+    with open("pseudo_lang.txt", "r", encoding="utf-8") as file:
         pseudo_structure = file.read()
 
     # test_code = "while ($i < 8) { print($i); $i++; } name2 = "Max";"
@@ -30,6 +30,7 @@ def translate(code, maze):
             {"role": "user", "content": f"Covert this code to python and just give the converted python code as the result so that I can extract it like this '```python(.*?)```': {code}"},
         ]
     )
+    
     # Extract the answer from the API response
     answer = response['choices'][0]['message']['content']
 
