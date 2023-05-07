@@ -90,6 +90,8 @@ ThreeMaze.prototype.simulateMaze = function() {
         maze_id: this.current_level,
         code: this.editor.value
       };
+      // Show the loading overlay
+  setLoadingOverlayVisible(true);
     //POST request to codecheck endpoint
     fetch('/mock_codecheck', {
         method: 'POST',
@@ -98,9 +100,16 @@ ThreeMaze.prototype.simulateMaze = function() {
         },
         body: JSON.stringify(data),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             console.log('Success:', data);
+            // Hide the loading overlay
+      setLoadingOverlayVisible(false);
             // simulate going the path that was given by pressing the right keys depending on where you want to go
             var upArrowEvent = new KeyboardEvent("keydown", { keyCode: 38 });
             var downArrowEvent = new KeyboardEvent("keydown", { keyCode: 40 });
@@ -134,10 +143,6 @@ ThreeMaze.prototype.simulateMaze = function() {
             console.log(prim_code.value);
             console.log(prim_translated.value);
 
-            // const prim_feedback = new Primrose({});
-            // prim_feedback.value = data.feedback;
-            // console.log(prim_feedback.value);
-            
             Promise.all([
                 createVisibleCanvasFromOffscreen(prim_code),
                 createVisibleCanvasFromOffscreen(prim_translated),
@@ -145,7 +150,7 @@ ThreeMaze.prototype.simulateMaze = function() {
                 modalText.innerHTML =
                   "<p>Your Score was :</p> <p>" +
                   data.score +
-                  "</p> <br><p> This is our Feedback: </p><br> <p>";
+                  "</p> <br><p> This is our Feedback: </p><br> <p>" + data.feedback;
                 modalText.innerHTML +=
                   "<br><br> <p>This is the code that is was translated to: </p><br>";
                 modalText.appendChild(visiblePrimTranslatedCanvas); // Add the prim_translated's visible canvas to the modalText
@@ -160,6 +165,11 @@ ThreeMaze.prototype.simulateMaze = function() {
             }
         }
         )
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+            // Hide the loading overlay
+            setLoadingOverlayVisible(false);
+        });
 
 };
 
@@ -176,6 +186,10 @@ function createVisibleCanvasFromOffscreen(primroseObj) {
         resolve(visibleCanvas);
       });
     });
+  }
+  function setLoadingOverlayVisible(visible) {
+    const loadingOverlay = document.getElementById("loading-overlay");
+    loadingOverlay.style.display = visible ? "flex" : "none";
   }
 
     ThreeMaze.prototype.onGenerateMaze = function()
