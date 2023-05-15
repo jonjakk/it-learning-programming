@@ -86,107 +86,81 @@ import { Primrose } from "/static/assets/js/libs/primrose.js";
 }
 
 ThreeMaze.prototype.simulateMaze = function() {
-    const data = {
-        maze_id: this.current_level,
-        code: this.editor.value
-      };
-      // Show the loading overlay
+  const data = {
+      maze_id: this.current_level,
+      code: this.editor.value
+  };
+
+  // Show the loading overlay
   setLoadingOverlayVisible(true);
-    //POST request to codecheck endpoint
-    fetch('/mock_codecheck', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Success:', data);
-            // Hide the loading overlay
+
+  //POST request to codecheck endpoint
+  fetch('/mock_codecheck', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+  })
+  .then(data => {
+      console.log('Success:', data);
+
+      // Hide the loading overlay
       setLoadingOverlayVisible(false);
-            // simulate going the path that was given by pressing the right keys depending on where you want to go
-            var upArrowEvent = new KeyboardEvent("keydown", { keyCode: 38 });
-            var downArrowEvent = new KeyboardEvent("keydown", { keyCode: 40 });
-            var leftArrowEvent = new KeyboardEvent("keydown", { keyCode: 37 });
-            var rightArrowEvent = new KeyboardEvent("keydown", { keyCode: 39 });
 
-            for (var i = 1; i < data.path_taken.length; i++) {
-                const [prevX, prevY] = data.path_taken[i - 1];
-                const [currentX, currentY] = data.path_taken[i];
+      // Simulate going the path that was given by pressing the right keys depending on where you want to go
+      var upArrowEvent = new KeyboardEvent("keydown", { keyCode: 38 });
+      var downArrowEvent = new KeyboardEvent("keydown", { keyCode: 40 });
+      var leftArrowEvent = new KeyboardEvent("keydown", { keyCode: 37 });
+      var rightArrowEvent = new KeyboardEvent("keydown", { keyCode: 39 });
 
-                setTimeout(() => {
-                    if (currentX < prevX) { // When moving right in the flipped maze, currentX will be less than prevX
-                        document.dispatchEvent(downArrowEvent);
-                    } else if (currentX > prevX) { // When moving left in the flipped maze, currentX will be greater than prevX
-                        document.dispatchEvent(leftArrowEvent);
-                    } else if (currentY > prevY) {
-                        document.dispatchEvent(upArrowEvent);
-                    } else if (currentY < prevY) {
-                        document.dispatchEvent(rightArrowEvent);
-                    }
-                }, 500 * i);
-            }
+      for (var i = 1; i < data.path_taken.length; i++) {
+          const [prevX, prevY] = data.path_taken[i - 1];
+          const [currentX, currentY] = data.path_taken[i];
 
-            // pop up a modal with the result
-            var modalText = document.getElementById("modalText");
-            //Display Code in special primrose canvas
-            const prim_code = new Primrose({});
-            prim_code.value = data.code;
-            const prim_translated = new Primrose({});
-            prim_translated.value = data.translated_pseudo_code;
-            console.log(prim_code.value);
-            console.log(prim_translated.value);
+          setTimeout(() => {
+              if (currentX < prevX) { // When moving right in the flipped maze, currentX will be less than prevX
+                  document.dispatchEvent(downArrowEvent);
+              } else if (currentX > prevX) { // When moving left in the flipped maze, currentX will be greater than prevX
+                  document.dispatchEvent(leftArrowEvent);
+              } else if (currentY > prevY) {
+                  document.dispatchEvent(upArrowEvent);
+              } else if (currentY < prevY) {
+                  document.dispatchEvent(rightArrowEvent);
+              }
+          }, 500 * i);
+      }
 
-            Promise.all([
-                createVisibleCanvasFromOffscreen(prim_code),
-                createVisibleCanvasFromOffscreen(prim_translated),
-              ]).then(([visiblePrimCodeCanvas, visiblePrimTranslatedCanvas]) => {
-                modalText.innerHTML =
-                  "<p>Your Score was :</p> <p>" +
-                  data.score +
-                  "</p> <br><p> This is our Feedback: </p><br> <p>" + data.feedback;
-                modalText.innerHTML +=
-                  "<br><br> <p>This is the code that is was translated to: </p><br>";
-                modalText.appendChild(visiblePrimTranslatedCanvas); // Add the prim_translated's visible canvas to the modalText
-              });
-            
-            //show the Modal
-            this.modal.style.display = "block";
+      // Pop up a modal with the result
+      var modalText = document.getElementById("modalText");
+      
+      modalText.innerHTML +=
+        "<p>Your Score was :</p> <p>" +
+        data.score +
+        "</p> <br><p> This is our Feedback: </p><br> <p>" + data.feedback +
+        '<br><br> <p>This is the code that is was translated to: </p><br> <code class = "language-python"> ' + data.code +' </code>';
+      
+      // Show the Modal
+      this.modal.style.display = "block";
 
-            // if result is true, set current_level to current_level + 1
-            if (data.result) {
-                this.current_level += 1;
-            }
-        }
-        )
-        .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
-            // Hide the loading overlay
-            setLoadingOverlayVisible(false);
-        });
-
+      // If result is true, set current_level to current_level + 1
+      if (data.result) {
+          this.current_level += 1;
+      }
+  })
+  .catch(error => {
+      console.error('There has been a problem with your fetch operation:', error);
+      // Hide the loading overlay
+      setLoadingOverlayVisible(false);
+  });
 };
 
-function createVisibleCanvasFromOffscreen(primroseObj) {
-    return new Promise((resolve) => {
-      const offscreenCanvas = primroseObj.canvas;
-      const visibleCanvas = document.createElement("canvas");
-      visibleCanvas.width = offscreenCanvas.width;
-      visibleCanvas.height = offscreenCanvas.height;
-  
-      primroseObj.addEventListener("update", () => {
-        const ctx = visibleCanvas.getContext("2d");
-        ctx.drawImage(offscreenCanvas, 0, 0);
-        resolve(visibleCanvas);
-      });
-    });
-  }
   function setLoadingOverlayVisible(visible) {
     const loadingOverlay = document.getElementById("loading-overlay");
     loadingOverlay.style.display = visible ? "flex" : "none";

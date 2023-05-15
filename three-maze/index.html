@@ -14,6 +14,10 @@
       type="text/css"
       href="static/assets/css/styles.css"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="static/assets/css/prism.css">
   </head>
   <body>
     <div id="loading-overlay" class="loading-overlay" style="display: none;">
@@ -49,6 +53,14 @@
       window.onload = function () {
         var wrapper = document.querySelector(".three");
         var button = document.querySelector(".generate");
+        button.addEventListener("click", function() {
+          setTimeout(function() {
+            // Wrap the code formatting logic inside this setTimeout function
+            var codeBlock = document.querySelector("code.language-python");
+            Prism.highlightElement(codeBlock);
+          }, 2000); // Delay of 2 seconds (2000 milliseconds)
+        });
+        
         new ThreeMaze(wrapper, button);
       };
 
@@ -73,6 +85,7 @@
       toggleEditorButton.addEventListener("click", togglePrimrose);
       
     </script>
+    <script src="static/assets/js/libs/prism.js"></script>
     <div id="myModal" class="modal">
           <button class="close">
               Close
